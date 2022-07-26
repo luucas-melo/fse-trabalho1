@@ -1,10 +1,9 @@
 #include <wiringPi.h>
 #include <stdlib.h>
-#include <stdio.h>
-#include <semaforos.h>
+#include <Semaforos.hpp>
 #include <vector>
+#include <json.hpp>
 
-#define ledPin SEMAFORO_1_VERDE(2)
 // P0-P7 is 0-7 works through pins 29
 // see pin connections
 
@@ -33,6 +32,7 @@ void start_semaforo()
     semaforoVias.principal[1].active = SEMAFORO_1_VERDE(2);
     semaforoVias.auxiliar[1].active = SEMAFORO_2_VERMELHO(2);
     semaforoVias.principal[1].minTime = 20000;
+
     semaforoVias.principal[2].active = SEMAFORO_1_AMARELO(2);
     semaforoVias.auxiliar[2].active = SEMAFORO_2_VERMELHO(2);
     semaforoVias.principal[2].minTime = 3000;
@@ -44,9 +44,11 @@ void start_semaforo()
     semaforoVias.principal[4].active = SEMAFORO_1_VERMELHO(2);
     semaforoVias.auxiliar[4].active = SEMAFORO_2_VERDE(2);
     semaforoVias.principal[4].minTime = 5000;
+
     semaforoVias.principal[5].active = SEMAFORO_1_VERMELHO(2);
     semaforoVias.auxiliar[5].active = SEMAFORO_2_AMARELO(2);
     semaforoVias.principal[5].minTime = 5000;
+
     semaforoVias.principal[6].active = SEMAFORO_1_AMARELO(2);
     semaforoVias.auxiliar[6].active = SEMAFORO_2_AMARELO(2);
     semaforoVias.principal[6].minTime = 3000;
