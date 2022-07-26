@@ -31,3 +31,8 @@ run:
 
 clean:
 	-rm -f $(OBJDIR)/*.o $(EXE)
+
+cruzamento1:
+	./bin/bin cruzamento1.json
+cruzamento2:
+	./bin/bin cruzamento2.json
