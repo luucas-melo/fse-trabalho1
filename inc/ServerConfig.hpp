@@ -10,7 +10,7 @@
 #include <unistd.h>
 #include <cstdio>
 #include <cstring>
-
+#include <json.hpp>
 
 typedef struct address
 {
@@ -20,6 +20,16 @@ typedef struct address
 
 class ServerConfig
 {
+    using json = nlohmann::json;
+
 public:
     ServerConfig(const char *path);
+    std::string getName();
+    address getAddress();
+    json getTrafficLights();
+
+private:
+    std::string name_;
+    address address_;
+    json trafficLights_;
 };
