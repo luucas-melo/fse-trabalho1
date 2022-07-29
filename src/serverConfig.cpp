@@ -24,6 +24,7 @@ ServerConfig::ServerConfig(const char *file)
     address_.ip = data["ip_servidor_central"];
     address_.port = data["porta_servidor_central"];
     trafficLights_ = data["trafficLights"];
+    buttons_ = data["buttons"];
     // for (json::iterator it = data["trafficLights"].begin(); it != data["trafficLights"].end(); it++)
     // {
     //     std::cout << it.value()["wiringPin"] << '\n';
@@ -38,6 +39,11 @@ std::string ServerConfig::getName()
 json ServerConfig::getTrafficLights()
 {
     return this->trafficLights_;
+}
+
+json ServerConfig::getButtons()
+{
+    return this->buttons_;
 }
 
 address ServerConfig::getAddress()

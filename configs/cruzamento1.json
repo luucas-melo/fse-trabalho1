@@ -34,5 +34,15 @@
       "via": "auxiliar",
       "wiringPin": 26
     }
+  ],
+  "buttons": [
+    {
+      "name": "BOTAO_PEDESTRE_1",
+      "wiringPin": 10
+    },
+    {
+      "name": "BOTAO_PEDESTRE_2",
+      "wiringPin": 11
+    }
   ]
 }
