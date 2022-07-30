@@ -1,0 +1,48 @@
+{
+  "name": "cruzamento 2",
+  "ip_servidor_central": "127.0.0.1",
+  "porta_servidor_central": 10292,
+  "porta_servidor_distribuido": 10298,
+  "TL": [
+    {
+      "name": "SEMAFORO_1_VERDE",
+      "via": "principal",
+      "wiringPin": 8
+    },
+    {
+      "name": "SEMAFORO_1_AMARELO",
+      "via": "principal",
+      "wiringPin": 9
+    },
+    {
+      "name": "SEMAFORO_1_VERMELHO",
+      "via": "principal",
+      "wiringPin": 14
+    },
+    {
+      "name": "SEMAFORO_2_VERDE",
+      "via": "auxiliar",
+      "wiringPin": 30
+    },
+    {
+      "name": "SEMAFORO_2_AMARELO",
+      "via": "auxiliar",
+      "wiringPin": 21
+    },
+    {
+      "name": "SEMAFORO_2_VERMELHO",
+      "via": "auxiliar",
+      "wiringPin": 22
+    }
+  ],
+  "buttons": [
+    {
+      "name": "BOTAO_PEDESTRE_1",
+      "wiringPin": 12
+    },
+    {
+      "name": "BOTAO_PEDESTRE_2",
+      "wiringPin": 13
+    }
+  ]
+}
