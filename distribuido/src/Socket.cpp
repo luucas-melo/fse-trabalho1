@@ -1,6 +1,8 @@
 #include <Socket.hpp>
+#include <json.hpp>
 
 using namespace std;
+using json = nlohmann::json;
 
 Socket::Socket()
 {
@@ -87,9 +89,13 @@ std::string Socket::readMessage()
     return message;
 }
 
-void Socket::sendMessage(const char *message)
+void Socket::sendMessage(std::string message)
 {
-    send(socket_, message, strlen(message), 0);
+    std::cout << "MESSAGE SIZE" << message.size() << '\n';
+    if (send(socket_, message.c_str(), message.size(), 0) < 0)
+    {
+        std::cout << "Error sending message" << '\n';
+    }
 }
 
 int is_ready(int fd)

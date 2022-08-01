@@ -24,7 +24,7 @@ public:
     void closeConnection();
     int getConnection();
     std::string readMessage();
-    void sendMessage(const char *message);
+    void sendMessage(std::string message);
 
 protected:
     int socket_ = -1;
@@ -32,7 +32,7 @@ protected:
     int port_;
 
 private:
-    static Socket *inst_; // The one, single instance
+    static Socket *inst_;
     Socket();
     Socket(const Socket &);
     Socket &operator=(const Socket &);
