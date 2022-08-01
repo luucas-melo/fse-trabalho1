@@ -1,5 +1,5 @@
 interface ServerMessage {
-  from: string;
+  host: string;
   type: 'nightMode' | 'connectionId';
-  value: string;
+  message: string;
 }
