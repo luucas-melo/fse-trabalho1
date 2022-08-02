@@ -37,47 +37,42 @@ TrafficLight::TrafficLight(json trafficLightInputs, json buttons)
 
     std::cout << button_pedrestre_1 << '\n';
     // vermelho total
-    trafficLightVias.principal[0].active = trafficLightInputs[2]["wiringPin"];
-    trafficLightVias.auxiliar[0].active = trafficLightInputs[5]["wiringPin"];
+    trafficLightVias.principal[0].active = trafficLightInputs[2]["wiringPin"]; // red
+    trafficLightVias.auxiliar[0].active = trafficLightInputs[5]["wiringPin"];  // red
     trafficLightVias.principal[0].minTime = 1000;
     trafficLightVias.principal[0].maxTime = 1000;
 
-    trafficLightVias.principal[1].active = trafficLightInputs[0]["wiringPin"];
-    trafficLightVias.auxiliar[1].active = trafficLightInputs[5]["wiringPin"];
+    trafficLightVias.principal[1].active = trafficLightInputs[0]["wiringPin"]; // green
+    trafficLightVias.auxiliar[1].active = trafficLightInputs[5]["wiringPin"];  // red
     trafficLightVias.principal[1].minTime = 10000;
     trafficLightVias.principal[1].maxTime = 20000;
 
-    trafficLightVias.principal[2].active = trafficLightInputs[1]["wiringPin"];
-    trafficLightVias.auxiliar[2].active = trafficLightInputs[5]["wiringPin"];
+    trafficLightVias.principal[2].active = trafficLightInputs[1]["wiringPin"]; // yellow
+    trafficLightVias.auxiliar[2].active = trafficLightInputs[5]["wiringPin"];  // red
     trafficLightVias.principal[2].minTime = 3000;
     trafficLightVias.principal[2].maxTime = 3000;
 
     // vermelho total
-    trafficLightVias.principal[3].active = trafficLightInputs[2]["wiringPin"];
-    trafficLightVias.auxiliar[3].active = trafficLightInputs[5]["wiringPin"];
+    trafficLightVias.principal[3].active = trafficLightInputs[2]["wiringPin"]; // red
+    trafficLightVias.auxiliar[3].active = trafficLightInputs[5]["wiringPin"];  // red
     trafficLightVias.principal[3].minTime = 1000;
     trafficLightVias.principal[3].maxTime = 1000;
 
-    trafficLightVias.principal[4].active = trafficLightInputs[2]["wiringPin"];
-    trafficLightVias.auxiliar[4].active = trafficLightInputs[3]["wiringPin"];
+    trafficLightVias.principal[4].active = trafficLightInputs[2]["wiringPin"]; // red
+    trafficLightVias.auxiliar[4].active = trafficLightInputs[3]["wiringPin"];  // green
     trafficLightVias.principal[4].minTime = 5000;
     trafficLightVias.principal[4].maxTime = 10000;
 
-    trafficLightVias.principal[5].active = trafficLightInputs[2]["wiringPin"];
-    trafficLightVias.auxiliar[5].active = trafficLightInputs[4]["wiringPin"];
+    trafficLightVias.principal[5].active = trafficLightInputs[2]["wiringPin"]; // red
+    trafficLightVias.auxiliar[5].active = trafficLightInputs[4]["wiringPin"];  // yellow
     trafficLightVias.principal[5].minTime = 5000;
     trafficLightVias.principal[5].maxTime = 10000;
 
-    trafficLightVias.principal[6].active = trafficLightInputs[1]["wiringPin"];
-    trafficLightVias.auxiliar[6].active = trafficLightInputs[4]["wiringPin"];
-    trafficLightVias.principal[6].minTime = 3000;
-    trafficLightVias.principal[6].maxTime = 3000;
-
     // nightMode
-    trafficLightVias.principal[8].active = trafficLightInputs[1]["wiringPin"];
-    trafficLightVias.auxiliar[8].active = trafficLightInputs[4]["wiringPin"];
-    trafficLightVias.principal[8].minTime = 1500;
-    trafficLightVias.principal[8].maxTime = 1500;
+    trafficLightVias.principal[7].active = trafficLightInputs[1]["wiringPin"];
+    trafficLightVias.auxiliar[7].active = trafficLightInputs[4]["wiringPin"];
+    trafficLightVias.principal[7].minTime = 1500;
+    trafficLightVias.principal[7].maxTime = 1500;
 
     resetLights();
     for (json::iterator it = buttons.begin(); it != buttons.end(); it++)
@@ -127,7 +122,7 @@ void TrafficLight::start()
 
     while (1)
     {
-        if (this->currentState > 6 && this->currentState != 8)
+        if (this->currentState > 5 && this->currentState != 7)
             this->currentState = 0;
 
         std::cout << "INICIO WHILE " << this->currentState << '\n';
@@ -138,15 +133,20 @@ void TrafficLight::start()
         digitalWrite(trafficLightVias.principal[this->currentState].active, LOW);
         digitalWrite(trafficLightVias.auxiliar[this->currentState].active, LOW);
 
-        if (this->currentState <= 6)
+        if (this->currentState <= 5)
             this->currentState++;
     }
 }
 
-void TrafficLight::setNightMode()
+void TrafficLight::setNightMode(json mode)
 {
     resetLights();
-    this->currentState = 8;
+    if (mode == "on")
+        this->currentState = 7;
+    else
+    {
+        this->currentState = 0;
+    }
 }
 
 void TrafficLight::resetLights()

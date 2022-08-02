@@ -20,7 +20,7 @@ public:
     void start();
     void resetLights();
     int currentState = 0;
-    void setNightMode();
+    void setNightMode(json mode);
 
 private:
     std::string name;
