@@ -9,14 +9,29 @@
 
 using json = nlohmann::json;
 
-int currentState = 0;
 int buttonp1 = 0;
+
+typedef struct TrafficLightState
+{
+    int minTime;
+    int maxTime;
+    int active;
+} TrafficLightState;
+
+typedef struct TrafficLightVias
+{
+    TrafficLightState principal[9];
+    TrafficLightState auxiliar[9];
+} TrafficLightVias;
+
+TrafficLightVias trafficLightVias;
 
 TrafficLight::TrafficLight(json trafficLightInputs, json buttons)
 {
-
+    trafficLightInputs_ = trafficLightInputs;
     if (wiringPiSetup() == -1)
         exit(1);
+
     buttonp1 = buttons[0]["wiringPin"];
     button_pedrestre_2 = buttons[1]["wiringPin"];
 
@@ -58,15 +73,13 @@ TrafficLight::TrafficLight(json trafficLightInputs, json buttons)
     trafficLightVias.principal[6].minTime = 3000;
     trafficLightVias.principal[6].maxTime = 3000;
 
-    for (json::iterator it = trafficLightInputs.begin(); it != trafficLightInputs.end(); it++)
-    {
-        pinMode(it.value()["wiringPin"], OUTPUT);
-        pullUpDnControl(it.value()["wiringPin"], PUD_UP);
-        digitalWrite(it.value()["wiringPin"], LOW);
+    // nightMode
+    trafficLightVias.principal[8].active = trafficLightInputs[1]["wiringPin"];
+    trafficLightVias.auxiliar[8].active = trafficLightInputs[4]["wiringPin"];
+    trafficLightVias.principal[8].minTime = 1500;
+    trafficLightVias.principal[8].maxTime = 1500;
 
-        std::cout << it.value()["wiringPin"] << '\n';
-    }
-
+    resetLights();
     for (json::iterator it = buttons.begin(); it != buttons.end(); it++)
     {
         pinMode(it.value()["wiringPin"], INPUT);
@@ -100,7 +113,7 @@ void handlePedestrianButton1()
 
     if (isPressed(buttonp1))
     {
-        std::cout << "PRESSED" << currentState << '\n';
+        std::cout << "PRESSED" << '\n';
         wasPressed = 1;
     }
 }
@@ -114,15 +127,37 @@ void TrafficLight::start()
 
     while (1)
     {
-        std::cout << "INICIO WHILE" << '\n';
-        if (currentState > 5)
-            currentState = 0;
+        if (this->currentState > 6 && this->currentState != 8)
+            this->currentState = 0;
 
-        digitalWrite(trafficLightVias.principal[currentState].active, HIGH);
-        digitalWrite(trafficLightVias.auxiliar[currentState].active, HIGH);
-        delay(trafficLightVias.principal[currentState].maxTime);
-        digitalWrite(trafficLightVias.principal[currentState].active, LOW);
-        digitalWrite(trafficLightVias.auxiliar[currentState].active, LOW);
-        currentState++;
+        std::cout << "INICIO WHILE " << this->currentState << '\n';
+
+        digitalWrite(trafficLightVias.principal[this->currentState].active, HIGH);
+        digitalWrite(trafficLightVias.auxiliar[this->currentState].active, HIGH);
+        delay(trafficLightVias.principal[this->currentState].minTime);
+        digitalWrite(trafficLightVias.principal[this->currentState].active, LOW);
+        digitalWrite(trafficLightVias.auxiliar[this->currentState].active, LOW);
+
+        if (this->currentState <= 6)
+            this->currentState++;
+    }
+}
+
+void TrafficLight::setNightMode()
+{
+    resetLights();
+    this->currentState = 8;
+}
+
+void TrafficLight::resetLights()
+{
+
+    for (json::iterator it = trafficLightInputs_.begin(); it != trafficLightInputs_.end(); it++)
+    {
+        pinMode(it.value()["wiringPin"], OUTPUT);
+        pullUpDnControl(it.value()["wiringPin"], PUD_UP);
+        digitalWrite(it.value()["wiringPin"], LOW);
+
+        std::cout << it.value()["wiringPin"] << '\n';
     }
 }

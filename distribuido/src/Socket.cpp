@@ -53,12 +53,12 @@ void Socket::connectSocket(char const *ip, int port)
                    servinfo->ai_addr,
                    servinfo->ai_addrlen) < 0)
     {
-        cerr << "Failed." << endl;
+        cerr << " ✕ Connection Failed." << endl;
         sleep(3);
         cout << "Connecting to " << ip << ':' << port << "... ";
     }
 
-    cout << " ✓ Connected" << endl;
+    cout << " ✓ Connected with success" << endl;
 }
 
 int Socket::getConnection()
@@ -85,7 +85,6 @@ std::string Socket::readMessage()
         exit(1);
     }
     std::string message = std::string(buffer, bytes);
-    std::cout << "MESSAGE: " << message << std::endl;
     return message;
 }
 

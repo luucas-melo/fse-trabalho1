@@ -1,22 +1,11 @@
+#ifndef TRAFFIC_LIGHT_HPP
+#define TRAFFIC_LIGHT_HPP
+
 #include <string>
 #include <json.hpp>
 
-typedef struct TrafficLightState
-{
-    int minTime;
-    int maxTime;
-    int active;
-} TrafficLightState;
-
-typedef struct TrafficLightVias
-{
-    TrafficLightState principal[7];
-    TrafficLightState auxiliar[7];
-} TrafficLightVias;
-
 class TrafficLight
 {
-
     using json = nlohmann::json;
 
 public:
@@ -25,13 +14,18 @@ public:
     std::string getVia();
     int getWiringPin();
     void startTrafficLights();
-    TrafficLightVias trafficLightVias;
+    json trafficLightInputs_;
     int button_pedrestre_1;
     int button_pedrestre_2;
     void start();
+    void resetLights();
+    int currentState = 0;
+    void setNightMode();
 
 private:
     std::string name;
     std::string via;
     int wiringPin;
 };
+
+#endif

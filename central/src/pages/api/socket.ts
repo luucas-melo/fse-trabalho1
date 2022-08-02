@@ -30,7 +30,7 @@ const SocketHandler = (req: NextApiRequest, res: ExtendedNextApiResponse) => {
 
         io.on('connection', (socket) => {
           console.log('RODOU CONNECTION');
-          socket.on('EVENTO', (data: ServerMessage) => {
+          socket.on('SEND_MESSAGE', (data: ServerMessage) => {
             console.log('DATA', data);
             const { host, type, message } = data;
 
@@ -71,14 +71,19 @@ const SocketHandler = (req: NextApiRequest, res: ExtendedNextApiResponse) => {
 
           connection.on('data', function (data) {
             const convertedMessage = messageConverter(data);
+            switch (convertedMessage.type) {
+              case 'connectionId': {
+                connectedSockets[convertedMessage.host] = connection;
+                io.emit('connection', {
+                  host: convertedMessage.host,
+                  type: 'connection',
+                  message: 1,
+                });
+              }
 
-            if (convertedMessage.type === 'connectionId') {
-              connectedSockets[convertedMessage.host] = connection;
-              io.emit('connection', {
-                host: convertedMessage.host,
-                type: 'connection',
-                message: 1,
-              });
+              //   case 'nightMode': {
+
+              //   }
             }
           });
 

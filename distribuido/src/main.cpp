@@ -17,12 +17,13 @@ int main(int argc, char const *argv[])
 
     ServerConfig config = ServerConfig(argv[1]);
     Socket *socket = Socket::getInstance();
-    MessageHandler messageHandler = MessageHandler(config.getName());
+    TrafficLight trafficLight = TrafficLight(config.getTrafficLights(), config.getButtons());
+    MessageHandler messageHandler = MessageHandler(config.getName(), trafficLight);
 
     try
     {
         socket->connectSocket(config.getAddress().ip.c_str(), config.getAddress().port);
-        socket->sendMessage(messageHandler.messageBuilder("connectionId", "CONECTADO"));
+        socket->sendMessage(messageHandler.messageBuilder("connectionId", "1"));
         std::cout << "MENSAGEM ENVIADA" << '\n';
         // sleep(500);
     }
@@ -33,7 +34,6 @@ int main(int argc, char const *argv[])
         Socket::getInstance()->closeConnection();
         exit(0);
     }
-    TrafficLight trafficLight = TrafficLight(config.getTrafficLights(), config.getButtons());
     std::thread messageThread(&MessageHandler::listen, messageHandler);
 
     trafficLight.start();

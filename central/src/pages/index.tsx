@@ -9,7 +9,7 @@ const Home: NextPage = () => {
 
   console.log('EL SOCKET', socket);
   const sendMessage = useCallback(() => {
-    socket?.current.emit('EVENTO', { host: 'cruzamento 1', type: 'check', message: 'teste' });
+    socket?.current.emit('SEND_MESSAGE', { host: 'cruzamento 1', type: 'nightMode', message: 'teste' });
 
     if (socket) {
       console.log('SOCKET ON', socket);

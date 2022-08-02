@@ -4,12 +4,13 @@
 
 using json = nlohmann::json;
 
-MessageHandler::MessageHandler(std::string hostName)
+MessageHandler::MessageHandler(std::string hostName, TrafficLight &trafficLight)
 {
+
     socket_ = Socket::getInstance();
     hostName_ = hostName.c_str();
-
-    std::cout << "HOST" << hostName_ << '\n';
+    this->trafficLight_ = &trafficLight;
+    std::cout << "HOST" << trafficLight.currentState << '\n';
 }
 
 void MessageHandler::listen()
@@ -18,7 +19,7 @@ void MessageHandler::listen()
     while (1)
     {
         std::string data = socket_->readMessage();
-        handleMessage(data.c_str());
+        handleReceivedMessage(data.c_str());
     }
 }
 
@@ -35,7 +36,15 @@ std::string MessageHandler::messageBuilder(const char *type, const char *message
     return messageString;
 }
 
-void MessageHandler::handleMessage(const char *message)
+void MessageHandler::handleReceivedMessage(const char *message)
 {
+    json j = json::parse(message);
+
+    if (j["type"] == "nightMode")
+    {
+        trafficLight_->setNightMode();
+        std::cout << "NIGHT MODE" << message << '\n';
+    }
+
     std::cout << "RECEIVED MESSAGE" << message << '\n';
 }
