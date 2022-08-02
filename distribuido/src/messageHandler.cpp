@@ -42,7 +42,9 @@ void MessageHandler::handleReceivedMessage(const char *message)
 
     if (j["type"] == "nightMode")
     {
-        trafficLight_->setNightMode();
+
+        trafficLight_->setNightMode(j["message"]);
+
         std::cout << "NIGHT MODE" << message << '\n';
     }
 
