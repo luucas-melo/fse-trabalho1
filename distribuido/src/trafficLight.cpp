@@ -74,11 +74,11 @@ TrafficLight::TrafficLight(json trafficLightInputs, json buttons)
     trafficLightVias.principal[7].minTime = 1500;
     trafficLightVias.principal[7].maxTime = 1500;
 
-    // nightMode
+    // emergencyMode
     trafficLightVias.principal[8].active = trafficLightInputs[0]["wiringPin"];
-    trafficLightVias.auxiliar[8].active = trafficLightInputs[3]["wiringPin"];
-    trafficLightVias.principal[8].minTime = 1500;
-    trafficLightVias.principal[8].maxTime = 1500;
+    trafficLightVias.auxiliar[8].active = trafficLightInputs[2]["wiringPin"];
+    trafficLightVias.principal[8].minTime = 0;
+    trafficLightVias.principal[8].maxTime = 0;
 
     for (json::iterator it = trafficLightInputs_.begin(); it != trafficLightInputs_.end(); it++)
     {
