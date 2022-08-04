@@ -76,7 +76,7 @@ TrafficLight::TrafficLight(json trafficLightInputs, json buttons)
 
     // emergencyMode
     trafficLightVias.principal[8].active = trafficLightInputs[0]["wiringPin"];
-    trafficLightVias.auxiliar[8].active = trafficLightInputs[2]["wiringPin"];
+    trafficLightVias.auxiliar[8].active = trafficLightInputs[5]["wiringPin"];
     trafficLightVias.principal[8].minTime = 0;
     trafficLightVias.principal[8].maxTime = 0;
 
@@ -128,7 +128,10 @@ void TrafficLight::start()
 
     while (1)
     {
-        if (this->currentState > 5 && this->currentState != 7 && this->currentState != 8)
+        int nightMode = this->currentState == 7;
+        int emergencyMode = this->currentState == 8;
+
+        if (this->currentState > 5 && !nightMode && !emergencyMode)
             this->currentState = 0;
 
         std::cout << "CURRENT STATE " << this->currentState << '\n';
@@ -136,10 +139,14 @@ void TrafficLight::start()
         digitalWrite(trafficLightVias.principal[this->currentState].active, HIGH);
         digitalWrite(trafficLightVias.auxiliar[this->currentState].active, HIGH);
         delay(trafficLightVias.principal[this->currentState].minTime);
-        digitalWrite(trafficLightVias.principal[this->currentState].active, LOW);
-        digitalWrite(trafficLightVias.auxiliar[this->currentState].active, LOW);
+        if (!emergencyMode)
+        {
 
-        this->currentState == 7
+            digitalWrite(trafficLightVias.principal[this->currentState].active, LOW);
+            digitalWrite(trafficLightVias.auxiliar[this->currentState].active, LOW);
+        }
+
+        if (nightMode) // equals nightMode
         {
 
             delay(1000);
