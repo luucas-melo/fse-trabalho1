@@ -135,7 +135,7 @@ void TrafficLight::start()
 
         digitalWrite(trafficLightVias.principal[this->currentState].active, HIGH);
         digitalWrite(trafficLightVias.auxiliar[this->currentState].active, HIGH);
-        delay(trafficLightVias.principal[this->currentState].minTime);
+        delay(trafficLightVias.principal[this->currentState].maxTime);
         digitalWrite(trafficLightVias.principal[this->currentState].active, LOW);
         digitalWrite(trafficLightVias.auxiliar[this->currentState].active, LOW);
 
