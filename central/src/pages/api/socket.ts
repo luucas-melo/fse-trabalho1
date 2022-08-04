@@ -82,13 +82,6 @@ const SocketHandler = (req: NextApiRequest, res: ExtendedNextApiResponse) => {
                   })
                 }
                 console.log('DATA', messageConverter(data))
-              case 'nightMode': {
-                io.emit('NIGHT_MODE', {
-                  host: convertedMessage.host,
-                  type: 'nightMode',
-                  message: 1
-                })
-              }
             }
           })
 
@@ -97,9 +90,9 @@ const SocketHandler = (req: NextApiRequest, res: ExtendedNextApiResponse) => {
               if (connectedSockets[socket] === connection) {
                 console.log(`${socket} disconnected`)
                 io.emit('CONNECTION', {
-                  from: socket,
+                  host: socket,
                   type: 'connection',
-                  value: 0
+                  message: 0
                 })
                 delete connectedSockets[socket]
               }

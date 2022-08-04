@@ -16,13 +16,18 @@ const Home: NextPage = () => {
     console.log('use effect')
 
     socket?.on('CONNECTION', (msg: ServerMessage) => {
-      console.log('connection')
+      console.log('connection', msg)
       const connected = !!Number(msg?.message)
-      console.log(connected)
-      crossings[msg?.host] = 'standardMode'
-
+      if (connected) {
+        crossings[msg?.host] = 'standardMode'
+      } else {
+        console.log('else')
+        delete crossings[msg?.host]
+        console.log('novo', crossings)
+      }
       const newCrossings = cloneDeep(crossings)
-      if (connected) setCrossings(newCrossings)
+
+      setCrossings(newCrossings)
     })
   }, [socket])
 
