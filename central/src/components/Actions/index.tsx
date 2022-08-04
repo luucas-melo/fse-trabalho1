@@ -13,14 +13,14 @@ export const Actions = () => {
       type: 'nightMode',
       message: 'off'
     })
-  }, [socket])
+  }, [socket, selectedCrossing])
   const setNightMode = useCallback(() => {
     socket?.emit('SEND_MESSAGE', {
       host: selectedCrossing,
       type: 'nightMode',
       message: 'on'
     })
-  }, [socket])
+  }, [socket, selectedCrossing])
 
   const setEmergencyMode = useCallback(() => {
     socket?.emit('SEND_MESSAGE', {
@@ -28,7 +28,7 @@ export const Actions = () => {
       type: 'emergencyMode',
       message: 'on'
     })
-  }, [socket])
+  }, [socket, selectedCrossing])
   return (
     <Flex align="flex-end" gap="2rem" justifySelf="flex-end" height="100%">
       <Tooltip label="Fluxo normal" fontSize="md">
