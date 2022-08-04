@@ -1,15 +1,15 @@
 import { CrossingContainer } from '@/components/CrossingContainer'
 
-import { Badge, Box, Flex } from '@chakra-ui/react'
+import { Badge, Box, Flex, Grid } from '@chakra-ui/react'
+import { useTrafficLight } from 'Context/TrafficLightContext'
+import { cloneDeep } from 'lodash'
 import type { NextPage } from 'next'
 
 import { useCallback, useEffect, useState } from 'react'
 import { Navbar } from '../components'
 import { useSocket } from '../hooks/useSocket'
 const Home: NextPage = () => {
-  const socket = useSocket()
-  const [connecteds, setConnecteds] = useState({})
-
+  const { crossings, setCrossings, socket } = useTrafficLight()
   useEffect(() => {
     console.log('CAAAA', socket)
     if (!socket) return
@@ -17,34 +17,31 @@ const Home: NextPage = () => {
 
     socket?.on('CONNECTION', (msg: ServerMessage) => {
       console.log('connection')
-      const connected = !!Number(msg?.type)
+      const connected = !!Number(msg?.message)
+      console.log(connected)
+      crossings[msg?.host] = 'standardMode'
 
-      setConnecteds({ ...connecteds, [msg?.host]: connected })
+      const newCrossings = cloneDeep(crossings)
+      if (connected) setCrossings(newCrossings)
     })
   }, [socket])
 
-  console.log('connecteds', connecteds)
+  console.log('connecteds', crossings)
 
-  console.log('EL SOCKET', socket)
-  const sendMessage = useCallback(() => {
-    socket?.emit('SEND_MESSAGE', {
-      host: 'cruzamento 2',
-      type: 'nightMode',
-      message: 'on'
-    })
-
-    if (socket) {
-      console.log('SOCKET ON', socket)
-    }
-  }, [socket])
   return (
-    <Box minH="100vh">
+    <Box minH="100vh" padding="2rem">
       <Navbar />
 
-      <Flex flexDirection="column" alignItems="flex-start" padding="2rem">
-        <CrossingContainer crossingName="cruzamento 1" />
-        {/* <button onClick={() => sendMessage()}> SEND MESSAGE</button> */}
-      </Flex>
+      <Grid
+        templateColumns={'repeat(auto-fill, minmax(250px, 1fr))'}
+        gap="4rem"
+        autoFlow="row dense"
+        justifyItems="center"
+      >
+        {Object.keys(crossings).map((crossingName) => {
+          return <CrossingContainer crossingName={crossingName} />
+        })}
+      </Grid>
     </Box>
   )
 }

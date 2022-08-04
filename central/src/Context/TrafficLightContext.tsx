@@ -1,5 +1,8 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
+import { useSocket } from '@/hooks/useSocket'
 import React, { createContext, useContext, useMemo, useState } from 'react'
+import { Socket } from 'socket.io-client'
+import { DefaultEventsMap } from 'socket.io/dist/typed-events'
 
 export type Data<T> = T
 export type DataRecord = Record<string, lightModes>
@@ -9,15 +12,16 @@ export type TrafficLightContextType<T> = {
   setCrossings: React.Dispatch<React.SetStateAction<Record<string, lightModes>>>
   selectedCrossing: string
   setSelectedCrossing: React.Dispatch<React.SetStateAction<string>>
+  socket: Socket<DefaultEventsMap, DefaultEventsMap> | null
 }
 
 export const TrafficLightContextDefaultValues: TrafficLightContextType<DataRecord> =
   {
     crossings: {},
     setCrossings: () => {},
-
     selectedCrossing: '',
-    setSelectedCrossing: () => {}
+    setSelectedCrossing: () => {},
+    socket: null
   }
 
 export const TrafficLightContext = createContext<any>(
@@ -29,14 +33,17 @@ export const TrafficLightProvider: React.FC<any> = ({ children }) => {
   const [crossings, setCrossings] = useState({})
   const [selectedCrossing, setSelectedCrossing] = useState('')
 
+  const socket = useSocket()
+
   const values = useMemo(
     () => ({
       selectedCrossing,
       setSelectedCrossing,
       crossings,
-      setCrossings
+      setCrossings,
+      socket
     }),
-    [selectedCrossing, crossings]
+    [selectedCrossing, crossings, socket]
   )
 
   return (
