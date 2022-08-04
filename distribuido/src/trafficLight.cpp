@@ -71,8 +71,8 @@ TrafficLight::TrafficLight(json trafficLightInputs, json buttons)
     // nightMode
     trafficLightVias.principal[7].active = trafficLightInputs[1]["wiringPin"];
     trafficLightVias.auxiliar[7].active = trafficLightInputs[4]["wiringPin"];
-    trafficLightVias.principal[7].minTime = 1500;
-    trafficLightVias.principal[7].maxTime = 1500;
+    trafficLightVias.principal[7].minTime = 1000;
+    trafficLightVias.principal[7].maxTime = 1000;
 
     // emergencyMode
     trafficLightVias.principal[8].active = trafficLightInputs[0]["wiringPin"];
@@ -135,10 +135,15 @@ void TrafficLight::start()
 
         digitalWrite(trafficLightVias.principal[this->currentState].active, HIGH);
         digitalWrite(trafficLightVias.auxiliar[this->currentState].active, HIGH);
-        delay(trafficLightVias.principal[this->currentState].maxTime);
+        delay(trafficLightVias.principal[this->currentState].minTime);
         digitalWrite(trafficLightVias.principal[this->currentState].active, LOW);
         digitalWrite(trafficLightVias.auxiliar[this->currentState].active, LOW);
 
+        this->currentState == 7
+        {
+
+            delay(1000);
+        }
         if (this->currentState <= 5)
             this->currentState++;
     }
