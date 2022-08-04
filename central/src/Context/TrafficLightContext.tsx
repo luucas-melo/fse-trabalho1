@@ -2,11 +2,11 @@
 import React, { createContext, useContext, useMemo, useState } from 'react'
 
 export type Data<T> = T
-export type DataRecord = Record<string, any>
+export type DataRecord = Record<string, lightModes>
 
 export type TrafficLightContextType<T> = {
-  crossings: Record<string, string>
-  setCrossings: React.Dispatch<React.SetStateAction<Record<string, string>>>
+  crossings: Record<string, lightModes>
+  setCrossings: React.Dispatch<React.SetStateAction<Record<string, lightModes>>>
   selectedCrossing: string
   setSelectedCrossing: React.Dispatch<React.SetStateAction<string>>
 }
