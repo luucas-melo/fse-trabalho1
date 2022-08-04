@@ -24,8 +24,7 @@ int main(int argc, char const *argv[])
     {
         socket->connectSocket(config.getAddress().ip.c_str(), config.getAddress().port);
         socket->sendMessage(messageHandler.messageBuilder("connectionId", "1"));
-        std::cout << "MENSAGEM ENVIADA" << '\n';
-        // sleep(500);
+        std::cout << "CONEXÃO ENVIADA" << '\n';
     }
     catch (std::exception &e)
     {

@@ -21,6 +21,8 @@ public:
     void resetLights();
     int currentState = 0;
     void setNightMode(json mode);
+    void setEmergencyMode(json mode);
+    void setStandardMode();
 
 private:
     std::string name;

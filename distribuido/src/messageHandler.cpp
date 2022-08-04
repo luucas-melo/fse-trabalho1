@@ -15,7 +15,6 @@ MessageHandler::MessageHandler(std::string hostName, TrafficLight &trafficLight)
 
 void MessageHandler::listen()
 {
-    std::cout << "Listening for events..." << std::endl;
     while (1)
     {
         std::string data = socket_->readMessage();
@@ -46,6 +45,22 @@ void MessageHandler::handleReceivedMessage(const char *message)
         trafficLight_->setNightMode(j["message"]);
 
         std::cout << "NIGHT MODE" << message << '\n';
+    }
+
+    if (j["type"] == "emergencyMode")
+    {
+
+        trafficLight_->setEmergencyMode(j["message"]);
+
+        std::cout << "EMERGENCY MODE" << message << '\n';
+    }
+
+    if (j["type"] == "standardMode")
+    {
+
+        trafficLight_->setStandardMode();
+
+        std::cout << "STANDARD MODE" << message << '\n';
     }
 
     std::cout << "RECEIVED MESSAGE" << message << '\n';

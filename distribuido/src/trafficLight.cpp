@@ -74,6 +74,12 @@ TrafficLight::TrafficLight(json trafficLightInputs, json buttons)
     trafficLightVias.principal[7].minTime = 1500;
     trafficLightVias.principal[7].maxTime = 1500;
 
+    // nightMode
+    trafficLightVias.principal[8].active = trafficLightInputs[0]["wiringPin"];
+    trafficLightVias.auxiliar[8].active = trafficLightInputs[3]["wiringPin"];
+    trafficLightVias.principal[8].minTime = 1500;
+    trafficLightVias.principal[8].maxTime = 1500;
+
     resetLights();
     for (json::iterator it = buttons.begin(); it != buttons.end(); it++)
     {
@@ -122,7 +128,7 @@ void TrafficLight::start()
 
     while (1)
     {
-        if (this->currentState > 5 && this->currentState != 7)
+        if (this->currentState > 5 && this->currentState != 7 && this->currentState != 8)
             this->currentState = 0;
 
         std::cout << "INICIO WHILE " << this->currentState << '\n';
@@ -147,6 +153,23 @@ void TrafficLight::setNightMode(json mode)
     {
         this->currentState = 0;
     }
+}
+
+void TrafficLight::setEmergencyMode(json mode)
+{
+    resetLights();
+    if (mode == "on")
+        this->currentState = 8;
+    else
+    {
+        this->currentState = 0;
+    }
+}
+
+void TrafficLight::setStandardMode()
+{
+    resetLights();
+    this->currentState = 0;
 }
 
 void TrafficLight::resetLights()
