@@ -10,11 +10,12 @@ export const CrossingContainer = () => {
   return (
     <Flex
       flexDirection="column"
-      border={'2px solid'}
+      border={'1px solid'}
       borderColor="teal"
       borderRadius="10px"
       bg="blackAlpha.900"
       textTransform="capitalize"
+      boxShadow="2xl"
     >
       {Object.keys(crossings)?.map((crossing) => {
         return (

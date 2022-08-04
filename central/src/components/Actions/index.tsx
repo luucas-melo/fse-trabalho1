@@ -1,12 +1,15 @@
 import { Flex, IconButton, Tooltip } from '@chakra-ui/react'
 import { useTrafficLight } from 'Context/TrafficLightContext'
-import { useSocket } from 'hooks/useSocket'
-import { useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { MdNightlight, MdPriorityHigh } from 'react-icons/md'
 import { TbTrafficLights } from 'react-icons/tb'
 
 export const Actions = () => {
-  const { socket, crossings } = useTrafficLight()
+  const { socket, crossings, setSelectedMode, selectedMode } = useTrafficLight()
+
+  useEffect(() => {
+    setSelectedMode('standardMode')
+  }, [crossings])
   const setStandardMode = useCallback(() => {
     {
       Object.keys(crossings)?.map((crossing) => {
@@ -17,6 +20,7 @@ export const Actions = () => {
         })
       })
     }
+    setSelectedMode('standardMode')
   }, [socket, crossings])
   const setNightMode = useCallback(() => {
     {
@@ -28,6 +32,7 @@ export const Actions = () => {
         })
       })
     }
+    setSelectedMode('nightMode')
   }, [socket, crossings])
 
   const setEmergencyMode = useCallback(() => {
@@ -38,12 +43,13 @@ export const Actions = () => {
         message: 'on'
       })
     })
+    setSelectedMode('emergencyMode')
   }, [socket, crossings])
   return (
     <Flex align="flex-end" gap="2rem" justifySelf="flex-end" height="100%">
       <Tooltip label="Fluxo normal" fontSize="md">
         <IconButton
-          variant="outline"
+          variant={selectedMode == 'standardMode' ? 'solid' : 'outline'}
           colorScheme="teal"
           aria-label="Call Sage"
           fontSize="20px"
@@ -53,7 +59,7 @@ export const Actions = () => {
       </Tooltip>
       <Tooltip label="Modo noturno" fontSize="md">
         <IconButton
-          variant="outline"
+          variant={selectedMode == 'nightMode' ? 'solid' : 'outline'}
           colorScheme="teal"
           aria-label="Call Sage"
           fontSize="20px"
@@ -63,7 +69,7 @@ export const Actions = () => {
       </Tooltip>
       <Tooltip label="Modo de emergência" fontSize="md">
         <IconButton
-          variant="outline"
+          variant={selectedMode == 'emergencyMode' ? 'solid' : 'outline'}
           colorScheme="teal"
           aria-label="Call Sage"
           fontSize="20px"

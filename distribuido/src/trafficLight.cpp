@@ -80,14 +80,14 @@ TrafficLight::TrafficLight(json trafficLightInputs, json buttons)
     trafficLightVias.principal[8].minTime = 1500;
     trafficLightVias.principal[8].maxTime = 1500;
 
-    resetLights();
-    for (json::iterator it = buttons.begin(); it != buttons.end(); it++)
+    for (json::iterator it = trafficLightInputs_.begin(); it != trafficLightInputs_.end(); it++)
     {
-        pinMode(it.value()["wiringPin"], INPUT);
-        pullUpDnControl(it.value()["wiringPin"], PUD_DOWN);
+        pinMode(it.value()["wiringPin"], OUTPUT);
+        pullUpDnControl(it.value()["wiringPin"], PUD_UP);
 
         std::cout << it.value()["wiringPin"] << '\n';
     }
+    resetLights();
 }
 
 int waitedMin = 0;
@@ -131,7 +131,7 @@ void TrafficLight::start()
         if (this->currentState > 5 && this->currentState != 7 && this->currentState != 8)
             this->currentState = 0;
 
-        std::cout << "INICIO WHILE " << this->currentState << '\n';
+        std::cout << "CURRENT STATE " << this->currentState << '\n';
 
         digitalWrite(trafficLightVias.principal[this->currentState].active, HIGH);
         digitalWrite(trafficLightVias.auxiliar[this->currentState].active, HIGH);
@@ -177,8 +177,6 @@ void TrafficLight::resetLights()
 
     for (json::iterator it = trafficLightInputs_.begin(); it != trafficLightInputs_.end(); it++)
     {
-        pinMode(it.value()["wiringPin"], OUTPUT);
-        pullUpDnControl(it.value()["wiringPin"], PUD_UP);
         digitalWrite(it.value()["wiringPin"], LOW);
 
         std::cout << it.value()["wiringPin"] << '\n';
