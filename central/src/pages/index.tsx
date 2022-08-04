@@ -1,6 +1,6 @@
 import { CrossingContainer } from '@/components/CrossingContainer'
 
-import { Badge, Box, Flex, Grid } from '@chakra-ui/react'
+import { Badge, Box, Flex, Grid, Heading, Spinner } from '@chakra-ui/react'
 import { useTrafficLight } from 'Context/TrafficLightContext'
 import { cloneDeep } from 'lodash'
 import type { NextPage } from 'next'
@@ -33,6 +33,29 @@ const Home: NextPage = () => {
 
   console.log('connecteds', crossings)
 
+  if (Object.keys(crossings).length < 1)
+    return (
+      <Flex
+        h="100vh"
+        flexDirection="column"
+        padding="2rem"
+        justify="center"
+        align="center"
+      >
+        <Box>
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="blue.500"
+            size="xl"
+          />
+        </Box>
+        <Heading fontSize="4xl" fontWeight="light">
+          Esperando conexões...
+        </Heading>
+      </Flex>
+    )
   return (
     <Box minH="100vh" padding="2rem">
       <Navbar />
