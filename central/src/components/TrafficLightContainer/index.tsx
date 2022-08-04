@@ -26,11 +26,11 @@ export const TrafficLightContainer = () => {
           ),
           emergencyMode: (
             <>
-              <Light color="red" style={{ animation: '0s', opacity: 0.2 }} />
+              <Light color="red" style={{ animation: '0s', opacity: 1 }} />
               <Light color="yellow" style={{ animation: '0s', opacity: 0.2 }} />
               <Light
                 color="green"
-                style={{ animationDuration: '2s', opacity: 0.2 }}
+                style={{ animationDuration: '0s', opacity: 1 }}
               />
             </>
           ),
