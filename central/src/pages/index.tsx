@@ -1,13 +1,11 @@
 import { CrossingContainer } from '@/components/CrossingContainer'
 
-import { Badge, Box, Flex, Grid, Heading, Spinner } from '@chakra-ui/react'
+import { Box, Flex, Heading, Spinner } from '@chakra-ui/react'
 import { useTrafficLight } from 'Context/TrafficLightContext'
 import { cloneDeep } from 'lodash'
 import type { NextPage } from 'next'
 
-import { useCallback, useEffect, useState } from 'react'
-import { Navbar } from '../components'
-import { useSocket } from '../hooks/useSocket'
+import { useEffect } from 'react'
 const Home: NextPage = () => {
   const { crossings, setCrossings, socket } = useTrafficLight()
   useEffect(() => {
@@ -57,20 +55,18 @@ const Home: NextPage = () => {
       </Flex>
     )
   return (
-    <Box minH="100vh" padding="2rem">
-      <Navbar />
-
-      <Grid
+    <Flex minH="100vh" justify="center" align="center" padding="2rem">
+      {/* <Grid
         templateColumns={'repeat(auto-fill, minmax(250px, 1fr))'}
         gap="4rem"
         autoFlow="row dense"
         justifyItems="center"
-      >
-        {Object.keys(crossings).map((crossingName) => {
-          return <CrossingContainer crossingName={crossingName} />
-        })}
-      </Grid>
-    </Box>
+      > */}
+
+      <CrossingContainer />
+
+      {/* </Grid> */}
+    </Flex>
   )
 }
 

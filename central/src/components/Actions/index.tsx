@@ -6,29 +6,39 @@ import { MdNightlight, MdPriorityHigh } from 'react-icons/md'
 import { TbTrafficLights } from 'react-icons/tb'
 
 export const Actions = () => {
-  const { selectedCrossing, socket } = useTrafficLight()
+  const { socket, crossings } = useTrafficLight()
   const setStandardMode = useCallback(() => {
-    socket?.emit('SEND_MESSAGE', {
-      host: selectedCrossing,
-      type: 'nightMode',
-      message: 'off'
-    })
-  }, [socket, selectedCrossing])
+    {
+      Object.keys(crossings)?.map((crossing) => {
+        socket?.emit('SEND_MESSAGE', {
+          host: crossing,
+          type: 'standardMode',
+          message: 'on'
+        })
+      })
+    }
+  }, [socket, crossings])
   const setNightMode = useCallback(() => {
-    socket?.emit('SEND_MESSAGE', {
-      host: selectedCrossing,
-      type: 'nightMode',
-      message: 'on'
-    })
-  }, [socket, selectedCrossing])
+    {
+      Object.keys(crossings)?.map((crossing) => {
+        socket?.emit('SEND_MESSAGE', {
+          host: crossing,
+          type: 'nightMode',
+          message: 'on'
+        })
+      })
+    }
+  }, [socket, crossings])
 
   const setEmergencyMode = useCallback(() => {
-    socket?.emit('SEND_MESSAGE', {
-      host: selectedCrossing,
-      type: 'emergencyMode',
-      message: 'on'
+    Object.keys(crossings)?.map((crossing) => {
+      socket?.emit('SEND_MESSAGE', {
+        host: crossing,
+        type: 'emergencyMode',
+        message: 'on'
+      })
     })
-  }, [socket, selectedCrossing])
+  }, [socket, crossings])
   return (
     <Flex align="flex-end" gap="2rem" justifySelf="flex-end" height="100%">
       <Tooltip label="Fluxo normal" fontSize="md">
